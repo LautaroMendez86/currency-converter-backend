@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace currency_converter_backend.Entities
+namespace CurrencyConverter.Entities
 {
     public class Subscription
     {
@@ -11,5 +11,6 @@ namespace currency_converter_backend.Entities
         public string Name { get; set;}
         public int Price { get; set; }
         public int TotalAvailableConversions { get; set; }
+        public List<User> Users { get; set; }
     }
 }

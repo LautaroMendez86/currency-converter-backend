@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace currency_converter_backend.Entities
+namespace CurrencyConverter.Entities
 {
     public class Favorite
     {

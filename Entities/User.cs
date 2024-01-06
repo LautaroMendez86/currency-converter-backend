@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace currency_converter_backend.Entities
+namespace CurrencyConverter.Entities
 {
     public class User
     {
