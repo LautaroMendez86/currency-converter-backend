@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace currency_converter_backend.Migrations
+namespace CurrencyConverter.Migrations
 {
     [DbContext(typeof(CurrencyConverterContext))]
     [Migration("20240106215128_InitialStructure")]

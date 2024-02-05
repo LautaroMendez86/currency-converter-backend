@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace currency_converter_backend.Migrations
+namespace CurrencyConverter.Migrations
 {
     [DbContext(typeof(CurrencyConverterContext))]
     partial class CurrencyConverterContextModelSnapshot : ModelSnapshot

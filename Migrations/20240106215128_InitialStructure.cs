@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace currency_converter_backend.Migrations
+namespace CurrencyConverter.Migrations
 {
     public partial class InitialStructure : Migration
     {

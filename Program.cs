@@ -1,3 +1,4 @@
+using CurrencyController.Data.Repository;
 using CurrencyConverter.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CurrencyConverterContext>(dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:CurrencyConverterConnectionString"]));
-
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<CurrencyRepository>();
 var app = builder.Build();
 
 
