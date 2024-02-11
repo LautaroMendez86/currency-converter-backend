@@ -20,11 +20,12 @@ namespace CurrencyConverter.Controllers
         {
             try
             {
-              List<Currency> currencies = _currencyRepository.Index();
+                List<Currency> currencies = _currencyRepository.Index();
 
-              return Ok(currencies);
+                return Ok(currencies);
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -74,5 +75,18 @@ namespace CurrencyConverter.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("import-external-currency")]
+        public async Task<IActionResult> ImportExternalCurrencies()
+        {
+            try
+            {
+                await _currencyRepository.ImportExternalCurrencies();
+                return Ok("Monedas importadas correctamente");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al importar monedas externas: " + ex.Message);
+            }
+        }
     }
-}
+    }
