@@ -2,6 +2,7 @@
 using CurrencyConverter.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CurrencyConverter.Migrations
 {
     [DbContext(typeof(CurrencyConverterContext))]
-    partial class CurrencyConverterContextModelSnapshot : ModelSnapshot
+    [Migration("20240213202832_renameFavouriteColumn")]
+    partial class renameFavouriteColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
@@ -78,29 +80,6 @@ namespace CurrencyConverter.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subscriptions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Suscripción Free",
-                            Price = 0,
-                            TotalAvailableConversions = 10
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Suscripción Trial",
-                            Price = 5,
-                            TotalAvailableConversions = 100
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Suscripción Pro",
-                            Price = 10,
-                            TotalAvailableConversions = 9999999
-                        });
                 });
 
             modelBuilder.Entity("CurrencyConverter.Entities.User", b =>

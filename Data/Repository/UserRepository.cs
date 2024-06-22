@@ -1,6 +1,7 @@
 ﻿using CurrencyController.Models.Dto;
 using CurrencyConverter.Data;
 using CurrencyConverter.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CurrencyController.Data.Repository
 {
@@ -13,7 +14,10 @@ namespace CurrencyController.Data.Repository
         }
         public List<User> Index()
         {
-            return _currencyConverterContext.Users.ToList();
+            return _currencyConverterContext.Users
+                .Include(u => u.Favourites)
+                .Include(u => u.Subscription)
+                .ToList();
         }
 
         public User Create(UserForCreation userDto)
@@ -31,6 +35,10 @@ namespace CurrencyController.Data.Repository
 
             return user;
         }
-      
+
+        public User? ValidateUser(AuthenticationRequestBody authRequestBody)
+        {
+            return _currencyConverterContext.Users.FirstOrDefault(p => p.Username == authRequestBody.Username && p.Password == authRequestBody.Password);
+        }
     }
 }

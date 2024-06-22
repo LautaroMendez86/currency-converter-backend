@@ -91,37 +91,71 @@ namespace CurrencyController.Data.Repository
 
             try
             {
-
                 HttpResponseMessage response = await client.GetAsync(api);
 
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception("Error en la importacion");
                 }
+
                 dynamic currencies = JObject.Parse(await response.Content.ReadAsStringAsync());
                 dynamic rates = currencies.rates;
                 dynamic names = currencies.names;
-                 
+
                 foreach (var key in names)
                 {
-                   JProperty obj = new(key);
+                    JProperty obj = new(key);
+
+                    string currencyName = obj.Name;
+                    double currencyValue = rates[currencyName].from;
+                    string currencySymbol = obj.Value.ToString();
 
                     Currency currencyEntity = new()
                     {
-                        Name = obj.Name,
-                        Value = rates[obj.Name].from,
-                        Symbol = obj.Value.ToString()
+                        Name = currencyName,
+                        Value = 1 / currencyValue,
+                        Symbol = currencySymbol
                     };
 
-                    _currencyConverterContext.Currencies.Add(currencyEntity);
-                    _currencyConverterContext.SaveChanges();
+                    UpdateOrAddCurrency(currencyEntity);
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error importando monedas externas" + ex);
+                throw new Exception("Error importando monedas externas: " + ex.Message, ex);
             }
         }
+
+        public double Convert(CurrencyConversionDto currencyConversionDto)
+        {
+            Currency fromCurrency = _currencyConverterContext.Currencies.FirstOrDefault(c => c.Id == currencyConversionDto.FromCurrency);
+            Currency toCurrency = _currencyConverterContext.Currencies.FirstOrDefault(c => c.Id == currencyConversionDto.ToCurrency);
+
+            if (fromCurrency == null || toCurrency == null)
+            {
+                throw new ArgumentException("Moneda no encontrada");
+            }
+
+            double result = (currencyConversionDto.Amount * fromCurrency.Value) / toCurrency.Value;
+
+            return result;
+        }
+        private void UpdateOrAddCurrency(Currency currencyEntity)
+        {
+            Currency existingCurrency = _currencyConverterContext.Currencies.FirstOrDefault(c => c.Name == currencyEntity.Name);
+
+            if (existingCurrency != null)
+            {
+                existingCurrency.Value = currencyEntity.Value;
+            }
+            else
+            {
+                _currencyConverterContext.Currencies.Add(currencyEntity);
+            }
+
+            _currencyConverterContext.SaveChanges();
+        }
+
 
     }
 }

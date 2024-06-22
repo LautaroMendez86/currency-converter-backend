@@ -18,5 +18,7 @@ namespace CurrencyConverter.Entities
         [ForeignKey("SubscriptionId")]
         public int SubscriptionId { get; set; }
         public Subscription Subscription { get; set; }
+
+        public List<Favourite>? Favourites { get; set; }
     }
 }

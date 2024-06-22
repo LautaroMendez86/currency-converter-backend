@@ -75,7 +75,23 @@ namespace CurrencyConverter.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("import-external-currency")]
+
+        [HttpPost("convert")]
+        public IActionResult Convert(CurrencyConversionDto currencyConversionDto)
+        {
+            try
+            {
+                double result = _currencyRepository.Convert(currencyConversionDto);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("import-currencies")]
         public async Task<IActionResult> ImportExternalCurrencies()
         {
             try

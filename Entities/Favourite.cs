@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CurrencyConverter.Entities
 {
-    public class Favorite
+    public class Favourite
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

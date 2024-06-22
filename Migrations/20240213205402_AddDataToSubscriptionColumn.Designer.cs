@@ -2,6 +2,7 @@
 using CurrencyConverter.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CurrencyConverter.Migrations
 {
     [DbContext(typeof(CurrencyConverterContext))]
-    partial class CurrencyConverterContextModelSnapshot : ModelSnapshot
+    [Migration("20240213205402_AddDataToSubscriptionColumn")]
+    partial class AddDataToSubscriptionColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
