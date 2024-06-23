@@ -104,5 +104,19 @@ namespace CurrencyConverter.Controllers
                 return BadRequest("Error al importar monedas externas: " + ex.Message);
             }
         }
+
+        [HttpPost("search")]
+        public IActionResult Search(String query)
+        {
+            try
+            {
+                List<Currency> result = _currencyRepository.SearchByString(query);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
     }

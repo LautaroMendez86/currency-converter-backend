@@ -157,5 +157,9 @@ namespace CurrencyController.Data.Repository
         }
 
 
+        public List<Currency> SearchByString(String query)
+        {
+            return _currencyConverterContext.Currencies.Where(currency => currency.Name.ToLower().Contains(query.ToLower()) || currency.Symbol.ToLower().Contains(query.ToLower())).ToList();
+        }
     }
 }

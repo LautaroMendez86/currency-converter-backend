@@ -7,52 +7,60 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
 
-
-
 namespace CurrencyConverter
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 options.JsonSerializerOptions.WriteIndented = true;
             });
             builder.Services.AddControllers();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200") // Cambia esto a la URL de tu frontend
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(setupAction =>
             {
-                setupAction.AddSecurityDefinition("CurrencyConverter", new OpenApiSecurityScheme() //Esto va a permitir usar swagger con el token.
+                setupAction.AddSecurityDefinition("CurrencyConverter", new OpenApiSecurityScheme()
                 {
                     Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
-                    Description = "Ac· pegar el token generado al loguearse."
+                    Description = "Ac√° pegar el token generado al loguearse."
                 });
 
                 setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "CurrencyConverter" } //Tiene que coincidir con el id seteado arriba en la definiciÛn
-                }, new List<string>() }
-    });
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "CurrencyConverter"
+                            }
+                        },
+                        new List<string>()
+                    }
+                });
             });
             builder.Services.AddDbContext<CurrencyConverterContext>(dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:CurrencyConverterConnectionString"]));
-            builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticaciÛn que tenemos que elegir despuÈs en PostMan para pasarle el token
-                .AddJwtBearer(options => //Ac· definimos la configuraciÛn de la autenticaciÛn. le decimos quÈ cosas queremos comprobar. La fecha de expiraciÛn se valida por defecto.
+            builder.Services.AddAuthentication("Bearer")
+                .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new()
                     {
@@ -73,7 +81,6 @@ namespace CurrencyConverter
 
             var app = builder.Build();
 
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -81,11 +88,9 @@ namespace CurrencyConverter
                 app.UseSwaggerUI();
             }
 
-            app.UseCors(
-              options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
-            );
-
-            app.UseHttpsRedirection();
+            app.UseCors("AllowSpecificOrigin");            
+            // Eliminar o comentar la redirecci√≥n HTTPS
+            // app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
