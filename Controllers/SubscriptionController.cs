@@ -1,12 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CurrencyController.Data.Repository;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CurrencyConverter.Controllers
 {
-    public class SubscriptionController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class SubscriptionController : ControllerBase
     {
+        private readonly SubscriptionRepository _subscriptionRepository;
+        public SubscriptionController(SubscriptionRepository subscriptionRepository)
+        {
+            _subscriptionRepository = subscriptionRepository;
+        }
+
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            try
+            {
+                return Ok(_subscriptionRepository.Index());
+            }
+            catch (Exception e)
+            {
+                return NotFound();
+            }
         }
     }
 }

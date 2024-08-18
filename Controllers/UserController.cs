@@ -27,18 +27,32 @@ namespace CurrencyConverter.Controllers
 
             return Ok(Users);
         }
+        
+        [HttpGet("{id}")]
+        public IActionResult GetUser(int id)
+        {
+            try
+            {
+                return Ok(_userRepository.GetOne(id));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [HttpPost]
         public IActionResult Create(UserForCreation user)
         {
-            if (user == null)
-            {
-                return BadRequest();
-            }
-
             User userCreated = _userRepository.Create(user);
-
             return Ok(userCreated);
+        }
+
+        [HttpPut]
+        public IActionResult Update(User user)
+        {
+                _userRepository.UpdateSubscription(user);
+                return Ok("Usuario actualizado correctamente");
         }
 
     }

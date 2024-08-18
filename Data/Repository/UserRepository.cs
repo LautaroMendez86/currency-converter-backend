@@ -2,6 +2,7 @@
 using CurrencyConverter.Data;
 using CurrencyConverter.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CurrencyController.Data.Repository
 {
@@ -18,6 +19,13 @@ namespace CurrencyController.Data.Repository
                 .Include(u => u.Favourites)
                 .Include(u => u.Subscription)
                 .ToList();
+        }
+
+        public User? GetOne(int id)
+        {
+            return _currencyConverterContext.Users
+                .Include(u => u.Subscription)
+                .Single(u => u.Id == id);
         }
 
         public User Create(UserForCreation userDto)
@@ -39,6 +47,18 @@ namespace CurrencyController.Data.Repository
         public User? ValidateUser(AuthenticationRequestBody authRequestBody)
         {
             return _currencyConverterContext.Users.FirstOrDefault(p => p.Username == authRequestBody.Username && p.Password == authRequestBody.Password);
+        }
+
+        public void UpdateSubscription(User user)
+        {
+            var existingUser = _currencyConverterContext.Users.Find(user.Id);
+            if (existingUser == null)
+            {
+                throw new KeyNotFoundException("Usuario no encontrado");
+            }
+
+            existingUser.SubscriptionId = user.SubscriptionId; 
+            _currencyConverterContext.SaveChanges();
         }
     }
 }

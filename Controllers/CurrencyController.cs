@@ -1,12 +1,14 @@
 ﻿using CurrencyController.Data.Repository;
 using CurrencyController.Models.Dto;
 using CurrencyConverter.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CurrencyConverter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CurrencyController : ControllerBase
     {
         public CurrencyRepository _currencyRepository;

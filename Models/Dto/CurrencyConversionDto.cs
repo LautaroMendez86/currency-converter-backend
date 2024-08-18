@@ -5,5 +5,7 @@
         public int FromCurrency { get; set; }
         public int ToCurrency { get; set; }
         public double Amount { get; set; }
+        
+        public int UserId { get; set; }
     }
 }

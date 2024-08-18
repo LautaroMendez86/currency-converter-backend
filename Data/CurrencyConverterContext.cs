@@ -9,7 +9,7 @@ namespace CurrencyConverter.Data
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<Favourite> Favourites { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
-
+        public DbSet<ConverterHistory> ConverterHistories { get; set; }
         public CurrencyConverterContext(DbContextOptions<CurrencyConverterContext> options) : base(options) //Acá estamos llamando al constructor de DbContext que es el que acepta las opciones
         {
         }
@@ -38,7 +38,7 @@ namespace CurrencyConverter.Data
                 Id = 3,
                 Name = "Suscripción Pro",
                 Price = 10,
-                TotalAvailableConversions = 9999999
+                TotalAvailableConversions = null
             };
 
             modelBuilder.Entity<Subscription>()
@@ -47,7 +47,7 @@ namespace CurrencyConverter.Data
             modelBuilder.Entity<Subscription>()
                 .HasMany(subscription => subscription.Users)
                 .WithOne(user => user.Subscription);
-
+            
             base.OnModelCreating(modelBuilder);
         }
     }

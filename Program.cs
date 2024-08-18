@@ -76,6 +76,8 @@ namespace CurrencyConverter
             builder.Services.AddScoped<UserRepository>();
             builder.Services.AddScoped<CurrencyRepository>();
             builder.Services.AddScoped<FavouriteRepository>();
+            builder.Services.AddScoped<SubscriptionRepository>();
+            builder.Services.AddScoped<ConverterHistoryRepository>();
             builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddHttpContextAccessor();
 

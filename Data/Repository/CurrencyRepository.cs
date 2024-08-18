@@ -8,9 +8,11 @@ namespace CurrencyController.Data.Repository
     public class CurrencyRepository
     {
         public CurrencyConverterContext _currencyConverterContext;
-        public CurrencyRepository(CurrencyConverterContext currencyConverterContext)
+        public ConverterHistoryRepository _converterHistoryRepository;
+        public CurrencyRepository(CurrencyConverterContext currencyConverterContext, ConverterHistoryRepository converterHistoryRepository)
         {
             _currencyConverterContext = currencyConverterContext;
+            _converterHistoryRepository = converterHistoryRepository;
         }
         public List<Currency> Index()
         {
@@ -138,6 +140,18 @@ namespace CurrencyController.Data.Repository
 
             double result = (currencyConversionDto.Amount * fromCurrency.Value) / toCurrency.Value;
 
+            ConverterHistoryDto dto = new ConverterHistoryDto
+            {
+                Amount = currencyConversionDto.Amount,
+                CurrencyFrom = fromCurrency.Id,
+                CurrencyTo = toCurrency.Id,
+                Date = DateTime.Now,
+                Result = result,
+                UserId = currencyConversionDto.UserId
+            };
+            
+            _converterHistoryRepository.AddConverterHistory(dto);
+            
             return result;
         }
         private void UpdateOrAddCurrency(Currency currencyEntity)
