@@ -17,6 +17,24 @@ public class ConverterHistoryRepository
        return _currencyConverterContext.ConverterHistories.Where(history => history.UserId == userId).Include(history => history.CurrencyFrom).Include(history => history.CurrencyTo).OrderByDescending(history => history.Date).ToList();
     }
 
+    public bool CanConvert(int userId)
+    {
+        var user = _currencyConverterContext.Users?.Where(user => user.Id == userId).Include(user => user.Subscription).First();
+        
+        if (user == null || user.Subscription?.TotalAvailableConversions == null)
+        {
+            return true;
+        }
+
+        int limit = user.Subscription.TotalAvailableConversions.Value;
+
+        int conversionCount = _currencyConverterContext.ConverterHistories
+            .Where(history => history.UserId == userId && history.Date > DateTime.Now.AddMonths(-1))
+            .Count();
+
+        return conversionCount < limit;
+    }
+
     public void AddConverterHistory(ConverterHistoryDto converterHistory)
     {
         ConverterHistory converterHistoryEntity = new ConverterHistory

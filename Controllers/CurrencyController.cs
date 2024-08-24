@@ -11,10 +11,12 @@ namespace CurrencyConverter.Controllers
     [Authorize]
     public class CurrencyController : ControllerBase
     {
-        public CurrencyRepository _currencyRepository;
-        public CurrencyController(CurrencyRepository currencyRepository)
+        private readonly CurrencyRepository _currencyRepository;
+        private readonly ConverterHistoryRepository _converterHistoryRepository;
+        public CurrencyController(CurrencyRepository currencyRepository, ConverterHistoryRepository converterHistoryRepository)
         {
             _currencyRepository = currencyRepository;
+            _converterHistoryRepository = converterHistoryRepository;
         }
 
         [HttpGet]
@@ -83,13 +85,20 @@ namespace CurrencyConverter.Controllers
         {
             try
             {
+                bool canConvert = _converterHistoryRepository.CanConvert(currencyConversionDto.UserId);
+        
+                if (!canConvert)
+                {
+                    return BadRequest(new { success = false, message = "Alcanzaste el límite de intentos." });
+                }
+        
                 double result = _currencyRepository.Convert(currencyConversionDto);
 
-                return Ok(result);
+                return Ok(new { success = true, result });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, new { success = false, message = "Ocurrió un error inesperado.", details = ex.Message });
             }
         }
 

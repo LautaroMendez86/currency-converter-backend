@@ -17,6 +17,13 @@ public class ConverterHistoryController : ControllerBase
    [HttpGet("{userId}")]
    public IActionResult GetConverterHistory(int userId)
    {
-      return Ok(_converterHistoryRepository.GetConverterHistory(userId));
+      try
+      {
+         return Ok(_converterHistoryRepository.GetConverterHistory(userId));
+      }
+      catch (Exception e)
+      {
+         return StatusCode(500, e.Message);
+      }
    }
 }
