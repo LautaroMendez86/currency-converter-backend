@@ -47,7 +47,10 @@ namespace CurrencyConverter.Data
             modelBuilder.Entity<Subscription>()
                 .HasMany(subscription => subscription.Users)
                 .WithOne(user => user.Subscription);
-            
+
+            modelBuilder.Entity<ConverterHistory>()
+                .HasOne(converterHistory => converterHistory.CurrencyTo);
+  
             base.OnModelCreating(modelBuilder);
         }
     }

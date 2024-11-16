@@ -4,14 +4,14 @@ using CurrencyConverter.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CurrencyController.Controllers
+namespace CurrencyConverter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class FavouriteController : ControllerBase
     {
-        public FavouriteRepository _favouriteRepository;
+        private readonly FavouriteRepository _favouriteRepository;
         public FavouriteController(FavouriteRepository favouriteRepository)
         {
             _favouriteRepository = favouriteRepository;

@@ -11,6 +11,8 @@
 		<Content Remove="NewFolder1\**" />
 		<EmbeddedResource Remove="NewFolder1\**" />
 		<None Remove="NewFolder1\**" />
+		<Compile Remove="Migrations\20241116205620_TestAnnotations.cs" />
+		<Compile Remove="Migrations\20241116205620_TestAnnotations.Designer.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

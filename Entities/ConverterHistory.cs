@@ -8,16 +8,20 @@ public class ConverterHistory
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+    
     public double Amount { get; set; }
     public double Result { get; set; }
     public DateTime Date { get; set; }
-    [ForeignKey("UserId")]
+    
+    [ForeignKey(nameof(User))]
     public int UserId { get; set; }
     public User User { get; set; }
-    [ForeignKey("CurrencyId")]
+    
+    [ForeignKey(nameof(CurrencyTo))]
     public int CurrencyToId { get; set; }
     public Currency? CurrencyTo { get; set; }
-    [ForeignKey("CurrencyId")]
+    
+    [ForeignKey(nameof(CurrencyFrom))]
     public int CurrencyFromId { get; set; }
     public Currency? CurrencyFrom { get; set; }
 }

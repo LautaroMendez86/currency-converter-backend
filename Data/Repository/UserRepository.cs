@@ -30,6 +30,12 @@ namespace CurrencyController.Data.Repository
 
         public User Create(UserForCreation userDto)
         {
+
+            if (_currencyConverterContext.Users.Any(u => u.Username == userDto.Username))
+            {
+                throw new Exception($"El username {userDto.Username} ya existe");
+            }
+            
             User user = new()
             {
                 Email = userDto.Email,

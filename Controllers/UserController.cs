@@ -44,8 +44,15 @@ namespace CurrencyConverter.Controllers
         [HttpPost]
         public IActionResult Create(UserForCreation user)
         {
-            User userCreated = _userRepository.Create(user);
-            return Ok(userCreated);
+            try
+            {
+                User userCreated = _userRepository.Create(user);
+                return Ok(userCreated);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPut]
